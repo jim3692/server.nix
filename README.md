@@ -72,7 +72,7 @@ Just add the following to your flake.nix
       dns = "10.90.0.1";            # The default DNS (Used for all host, containers and VMs)
     };
 
-    containers = {p
+    containers = {
       wordpress = {                 # The name of the container
         ip = "10.0.10.10";          # The IP of the container
         vlan = "my-vlan-10";        # The VLAN to which this container will get attached
