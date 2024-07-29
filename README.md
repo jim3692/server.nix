@@ -57,6 +57,7 @@ Just add the following to your flake.nix
           id = 90;                  # The VLAN ID
           ip = "10.0.90.2";         # The IP for the host
           prefix = 24;              # The prefix of the subnet (10.0.90.2/24)
+          gateway = "10.0.90.1";    # The default gateway for the host and any container/VM that gets attached to this VLAN
           parentInterface = "eth0"; # The parent interface of the VLAN
         };
 
@@ -68,8 +69,7 @@ Just add the following to your flake.nix
         };
       };
 
-      defaultGateway = "10.0.90.1"; # The default gateway of the host
-      dns = "10.90.0.1";            # The default DNS (Used for all host, containers and VMs)
+      dns = "10.90.0.1";            # The default DNS used for the host, and all containers and VMs
     };
 
     containers = {
