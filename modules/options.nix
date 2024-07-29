@@ -22,6 +22,10 @@ let
   };
 
 in {
+  config.warnings = lib.filter (w: w != null) [
+    (if (config.server.network.defaultGateway != "") then "[DEPRECATION] Option 'config.server.network.defaultGateway' has been moved to 'server.network.vlans.<vlanName>.gateway'" else null)
+  ];
+
   options = with lib; {
     server = {
       containers = mkOption {
@@ -53,13 +57,13 @@ in {
               id = mkOption { type = types.int; };
               ip = mkOption { type = types.str; default = ""; };
               prefix = mkOption { type = types.int; };
-              gateway = mkOption { type = types.str; };
+              gateway = mkOption { type = types.str; default = ""; };
               parentInterface = mkOption { type = types.str; };
             };
           }));
         };
 
-        defaultGateway = mkOption { type = types.str; };
+        defaultGateway = mkOption { type = types.str; default = ""; };
         dns = mkOption { type = types.str; };
       };
     };

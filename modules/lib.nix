@@ -31,6 +31,18 @@ in {
         }];
       }) vlansWithIp;
 
+  getGatewayFromFirstVlanWithIpAndGateway = vlans:
+    let
+      vlansWithIp = lib.filter (vlanName: vlans."${vlanName}".ip != "" && vlans."${vlanName}".gateway != "")
+        (lib.attrNames vlans);
+    in vlans.${builtins.head vlansWithIp}.gateway;
+
+  getInterfacesWithIpsAndGatewaysFromVlansCount = vlans:
+    let
+      vlansWithIp = lib.filter (vlanName: vlans."${vlanName}".ip != "" && vlans."${vlanName}".gateway != "")
+        (lib.attrNames vlans);
+    in builtins.length vlansWithIp;
+
   disableDhcpForVlanParents = vlans:
     helpers.mapAttrsAndKeys (vlanName:
       let vlan = vlans."${vlanName}";
