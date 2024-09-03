@@ -90,7 +90,7 @@ Just add the following to your flake.nix
             };
 
             my-database = {
-              image: "mysql:8.0";
+              image = "mysql:8.0";
               # ...
             }
           };
