@@ -45,6 +45,7 @@ in {
     }
 
     common.all
-    args.extraConfiguration
   ];
+
+  imports = [ args.extraConfiguration ];
 }

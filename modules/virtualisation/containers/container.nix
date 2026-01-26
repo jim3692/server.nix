@@ -35,13 +35,15 @@ in {
     };
   };
 
-  config = { lib, ... }:
-    (lib.mkMerge [
+  config = { lib, ... }: {
+    config = (lib.mkMerge [
       {
         system.stateVersion = args.stateVersion;
       }
 
       common.all
-      args.extraConfiguration
     ]);
+
+    imports = [ args.extraConfiguration ];
+  };
 }
