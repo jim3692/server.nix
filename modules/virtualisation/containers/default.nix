@@ -10,6 +10,10 @@ let
       args = v;
       vlan = config.server.network.vlans."${v.vlan}";
       dns = if (v.dns != "") then v.dns else config.server.network.dns;
+      extraConfiguration.imports = [
+        config.server.extraConfiguration
+        v.extraConfiguration
+      ];
       inherit pkgs;
     }) config.server.containers;
 

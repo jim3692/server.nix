@@ -1,4 +1,11 @@
-{ args, pkgs, vlan, dns, ... }:
+{
+  args,
+  dns,
+  name,
+  pkgs,
+  vlan,
+  ...
+}:
   let
     lib = pkgs.lib;
     ServerLib = import ../lib.nix { inherit lib; };
@@ -20,15 +27,33 @@
       };
     };
 
-    network = {
-      networking = {
-        defaultGateway = {
-          address = (if args.gateway != "" then args.gateway else vlan.gateway);
+    network =
+      let
+        defaultGateway =
+          if args.gateway != ""
+          then args.gateway
+          else vlan.gateway;
+      in {
+        imports = [
+          (ServerLib.getDnsConfig dns)
+        ];
+
+        networking = {
+          defaultGateway = {
+            address = defaultGateway;
+          };
+
+          firewall = { enable = false; };
+
+          interfaces."${ServerLib.helpers.getVmVethName name}".ipv4.routes = [{
+            address = "0.0.0.0";
+            prefixLength = 0;
+            via = defaultGateway;
+          }];
+
+          resolvconf.enable = false;
         };
-
-        firewall = { enable = false; };
       };
-    } // (ServerLib.getDnsConfig dns);
 
-    all = lib.mkMerge [ docker network ];
+    all = { imports = [ docker network ]; };
   }

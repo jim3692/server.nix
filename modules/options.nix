@@ -28,6 +28,16 @@ in {
 
   options = with lib; {
     server = {
+      # Injected into the NixOS config of every container and VM.
+      # e.g. server.extraConfiguration = {
+      #        virtualisation.docker.daemon.settings = { ... };
+      #      };
+      extraConfiguration = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "NixOS configuration injected into all containers and VMs.";
+      };
+
       containers = mkOption {
         type = types.attrsOf (types.submodule ({ options, ... }: {
           options = vmOptions // {

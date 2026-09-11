@@ -89,7 +89,7 @@ in {
       builtins.toFile "bridges.json" json;
 
   getDnsConfig = dns: {
-    environment.etc."resolv.conf" = lib.mkForce {
+    environment.etc."resolv.conf" = {
       source = builtins.toFile "resolv.conf" "nameserver ${dns}";
       mode = "0644";
     };

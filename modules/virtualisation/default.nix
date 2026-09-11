@@ -1,4 +1,4 @@
-{ ... }: {
+{ config, lib, pkgs, ... }: {
   imports = [ ./containers ./vms ];
 
   virtualisation.libvirtd.enable = true;

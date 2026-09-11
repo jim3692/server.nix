@@ -1,4 +1,4 @@
-{ name, args, vlan, dns, pkgs }@params:
+{ name, args, vlan, dns, pkgs, extraConfiguration }@params:
 
 let
   lib = pkgs.lib;
@@ -36,14 +36,13 @@ in {
   };
 
   config = { lib, ... }: {
-    config = (lib.mkMerge [
-      {
-        system.stateVersion = args.stateVersion;
-      }
+    config = {
+      system.stateVersion = args.stateVersion;
+    };
 
+    imports = [
+      extraConfiguration
       common.all
-    ]);
-
-    imports = [ args.extraConfiguration ];
+    ];
   };
 }
